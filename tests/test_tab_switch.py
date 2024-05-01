@@ -3,7 +3,7 @@ from pages.login_page import LoginPage
 from utils.webdriver_utils import WebDriverUtils
 
 
-class TestClientInfo(unittest.TestCase):
+class TestTabSwitch(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.driver = WebDriverUtils.get_driver()
@@ -14,11 +14,9 @@ class TestClientInfo(unittest.TestCase):
     def tearDownClass(cls):
         cls.driver.quit()
 
-    def test_support_info_displayed(self):
-        """Проверка наличия вспомогательной информации для клиента"""
-        self.assertTrue(
-            self.login_page.is_support_info_displayed(), "Вспомогательная информация для клиента не отображается"
-        )
+    def test_tab_switch(self):
+        """Проверка автоматического изменения табов при вводе данных"""
+        self.assertTrue(self.login_page.is_tab_switch(), "Табы не переключаются автоматически при вводе данных")
 
 
 if __name__ == "__main__":

@@ -1,5 +1,6 @@
 import logging
 from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from config import BASE_URL, AUTHORIZATION_PASSWORD_URL
@@ -167,17 +168,84 @@ class LoginPage:
         except:
             return False
 
-    def test_client_info_displayed(self):
+    def is_support_info_displayed(self):
         """Проверка наличия вспомогательной информации для клиента"""
         try:
             # Поиск элемента по CSS-селектору
             client_info_element = WebDriverWait(self.driver, 10).until(
-                EC.presence_of_element_located((By.CSS_SELECTOR, ".client-info"))
+                EC.presence_of_element_located((
+                    By.CSS_SELECTOR, "#app-footer > div.rt-footer-right.rt-footer-side-item"))
             )
-            # Если элемент найден, то вспомогательная информация для клиента отображается
-            self.assertTrue(client_info_element.is_displayed(),
-                            "Вспомогательная информация для клиента не отображается")
-        except Exception as e:
-            # Если возникает ошибка, выводим сообщение об ошибке
-            print("Ошибка:", e)
-            self.fail("Тест завершился с ошибкой")
+
+            return True
+        except:
+            return False
+
+    def is_tab_switch(self):
+        """Проверка автоматического изменения табов при вводе данных"""
+        try:
+            # Клик по полю ввода
+            username_input = WebDriverWait(self.driver, 10).until(
+                EC.presence_of_element_located((By.ID, "username"))
+            )
+            username_input.send_keys("test@test.ru")
+            username_input.send_keys(Keys.TAB)
+
+            # Проверка, что таб автоматически изменяется на почту
+            WebDriverWait(self.driver, 10).until(
+                EC.presence_of_element_located((By.CSS_SELECTOR, "input[value='EMAIL']"))
+            )
+
+            # Клик по полю ввода
+            username_input = WebDriverWait(self.driver, 10).until(
+                EC.presence_of_element_located((By.ID, "username"))
+            )
+            username_input.click()
+
+            # Скрипт для очистки поля
+            self.driver.execute_script("arguments[0].value = '';", username_input)
+
+            username_input.send_keys("89998887766")
+            username_input.send_keys(Keys.TAB)
+
+            # Проверка, что таб автоматически изменяется на номер
+            WebDriverWait(self.driver, 10).until(
+                EC.presence_of_element_located((By.CSS_SELECTOR, "input[value='PHONE']"))
+            )
+
+            # Клик по полю ввода номер
+            username_input = WebDriverWait(self.driver, 10).until(
+                EC.presence_of_element_located((By.ID, "username"))
+            )
+            username_input.click()
+
+            # Скрипт для очистки поля
+            self.driver.execute_script("arguments[0].value = '';", username_input)
+
+            username_input.send_keys("USER")
+            username_input.send_keys(Keys.TAB)
+
+            # Проверка, что таб автоматически изменяется на логин
+            WebDriverWait(self.driver, 10).until(
+                EC.presence_of_element_located((By.CSS_SELECTOR, "input[value='LOGIN']"))
+            )
+
+            # Клик по полю ввода номер
+            username_input = WebDriverWait(self.driver, 10).until(
+                EC.presence_of_element_located((By.ID, "username"))
+            )
+            username_input.click()
+
+            # Скрипт для очистки поля
+            self.driver.execute_script("arguments[0].value = '';", username_input)
+
+            username_input.send_keys("126598340965")
+            username_input.send_keys(Keys.TAB)
+
+            # Проверка, что таб автоматически изменяется на лицевой счет
+            WebDriverWait(self.driver, 10).until(
+                EC.presence_of_element_located((By.CSS_SELECTOR, "input[value='LS']"))
+            )
+            return True
+        except:
+            return False
