@@ -1,5 +1,3 @@
-# project/tests/test_authentication_menu.py
-
 import unittest
 from pages.login_page import LoginPage
 from utils.webdriver_utils import WebDriverUtils
